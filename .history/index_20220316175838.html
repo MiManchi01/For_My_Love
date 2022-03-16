@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=100%, initial-scale=1">
+        <title>与未来老公聊天中</title>
+        <link href="css/main.min.css" rel="stylesheet" type="text/css">
+        <link rel="Shortcut Icon" href="favicon.ico"/>
+        <link rel="preload" href="img/beayty.jpg" as="image">
+        <link rel="preload" href="img/laopo6.jpg" as="image">
+        <link rel="preload" href="img/happy.jpeg" as="image">
+        <link rel="preload" href="img/nana.jpeg" as="image">
+        <link rel="preload" href="img/TheMayDay1.jpg" as="image">
+        <link rel="preload" href="img/TheMayDay2.jpg" as="image">
+        <link rel="preload" href="img/TheMayDay3.jpg" as="image">
+        <link rel="preload" href="img/kaixin.jpg" as="image">
+        <link rel="preload" href="img/laopo7.jpg" as="image">
+        <link rel="preload" href="img/xingfu.jpg" as="image">
+        <link rel="preload" href="img/kuaile.jpg" as="image">
+        <link rel="preload" href="img/qidai.jpg" as="image">
+        <link rel="preload" href="img/meiman.jpg" as="image">
+        <link rel="preload" href="img/flowers.jpg" as="image">
+        <link rel="preload" href="img/beizi.png" as="image">
+        <link rel="preload" href="img/YourSchool.jpg" as="image">
+        <link rel="preload" href="img/live.jpg" as="image">
+        <link rel="preload" href="img/AcrossTheYears.jpg" as="image">
+        <link rel="preload" href="img/Paece.jpg" as="image">
+        <link rel="preload" href="img/liaotian.jpg" as="image">
+        <link rel="preload" href="img/DR5.jpg" as="image">
+        <link rel="preload" href="img/DR4.jpg" as="image">
+        <link rel="preload" href="img/DR6.jpg" as="image">
+        <link rel="preload" href="img/DR1.jpg" as="image">
+        <link rel="preload" href="img/DR2.jpg" as="image">
+        <link rel="preload" href="img/DR3.jpg" as="image">
+        <link rel="preload" href="img/love1.jpg" as="image">
+        <link rel="preload" href="img/live1.jpg" as="image">
+        <link rel="preload" href="img/love3.jpg" as="image">
+        <link rel="preload" href="img/love4.jpg" as="image">
+        <link rel="preload" href="img/tietie.jpg" as="image">
+        <link rel="preload" href="img/laopo5.jpg" as="image">
+        <link rel="preload" href="img/heihie.jpeg" as="image">
+        <link rel="preload" href="img/love2.jpg" as="image">
+        <link rel="preload" href="img/baobao.jpeg" as="image">
+        <link rel="preload" href="img/lovely.jpg" as="image">
+        <link rel="preload" href="img/laopo1.jpg" as="image">
+        <link rel="preload" href="img/laopo2.jpg" as="image">
+        <link rel="preload" href="img/laopo3.jpg" as="image">
+        <link rel="preload" href="img/laopo4.jpg" as="image">
+        <link rel="preload" href="img/ai.jpg" as="image">
+        <link rel="preload" href="img/aini.jpg" as="image">
+    </head>
+    <body>
+        <div id="mobile" :class="{ 'has-prompt': hasPrompt }">
+            <div id="mobile-head">
+                <div id="mobile-head-title">与我家老公聊天中</div>
+            </div>
+            <div id="mobile-body">
+                <div id="mobile-body-bg"></div>
+                <div id="mobile-body-content">
+                    <div id="mock-msg-row" class="msg-row">
+                        <div id="mock-msg" class="msg" v-html="latestMsgContent"></div>
+                    </div>
+                    <div class="msg-row"
+                        v-for="(msg, index) in messages"
+                        :key="index"
+                        :class="msg.author === 'author' ? 'msg-author' : 'msg-me'">
+                        <div class="msg"
+                            :class="'msg-bounce-in-' + (msg.author === 'author' ? 'left': 'right')"
+                            :style="msg.width && msg.height && {width: msg.width - 26 + 'px', height: msg.height - 18 + 'px'}"
+                            v-html="msg.content"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-foot">
+                <div id="prompt">
+                    <div id="prompt-head">
+                        <div class="say-something">我想说……</div>
+                        <a href="javascript:;" class="close-btn"
+                            v-on:click="togglePrompt(false)"></a>
+                    </div>
+                    <div id="prompt-body">
+                        <ul class="responses" v-if="lastDialog">
+                            <li v-for="res in lastDialog.responses">
+                                <a href="javascript:;" v-on:click="respond(res)">{{ res.content }}</a>
+                            </li>
+                        </ul>
+                        <div class="next-topic"
+                            v-if="!lastDialog || !lastDialog.responses">
+                            <ul class="topics">
+                                <li v-for="topic in nextTopics">
+                                    <a href="javascript:;" v-on:click="ask(topic)">{{ topic.brief }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="input-hint" class="say-something"
+                    v-on:click="togglePrompt(true)"
+                    :class="{'clickable': !isTyping }">
+                    <span v-if="!isTyping">我想说……</span>
+                    <span v-if="isTyping">老公正在输入中</span>
+                </div>
+            </div>
+            <div id="prompt-bg" v-on:click="togglePrompt(false)"></div>
+        </div>
+
+        <div class="extra-link" id="meta-link">
+            <a class="letters" href="https://MiManchi01.github.io/for-my-love-master" target="_blank">
+                源码
+            </a>
+        </div>
+
+        <script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+        <script src="//cdn.bootcss.com/vue/2.2.6/vue.min.js"></script>
+
+        <script src="js/index-min.js"></script>
+    </body>
+</html>
